@@ -1,0 +1,17 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: kubestats-app
+  labels:
+    app: kubstats
+spec:
+  template:
+    metadata:
+      labels:
+        app: kubestats
+    spec:
+      containers:
+      - name: kubestats-app
+        image: gcr.io/kubernetes-playground-176304/kubestats:v5
+        ports:
+        - containerPort: 5000

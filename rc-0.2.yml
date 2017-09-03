@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: flaskapp-rc-updated
+spec:
+  selector:
+    name: web
+    version: v0.2
+  template:
+    metadata:
+      labels:
+        name: web
+        version: v0.2
+    spec:
+      containers:
+      - name: wathever
+        image: gcr.io/kubernetes-playground-176304/hello-app:v4
+        ports:
+        - containerPort: 5000
