@@ -1,71 +1,35 @@
-k8s py example
+K8s Python Example using GCP
 ==============
 
 This repo will explain you how to deploy a basic python application into
-kubernetes and how to rolling update it.
+kubernetes and how to execute a rolling update.
 
-First thing first, you will need to build your application, for the sake of
-simplicity we are going to to build the application twice here (one for each
-version):
+To build the application n Google Cloud run the following
+	docker build -t gcr.io/[PROJECTID/kubestats:latest .
 
-    docker build -t agonzalezro/k8s-py-example .
 
 The above command is going to create a docker image of your python application
-living into `src/`. We will tag it as version `0.1`:
+living into `src/`. We will now push the image to the container registry on GCP:
 
-    docker tag agonzalezro/k8s-py-example:latest agonzalezro/k8s-py-example:0.1
+	gcloud docker -- push gcr.io/[PROJECTID]/kubestats:latest
 
-You could have use the layer id as well, but this one is more straigh forward.
+Now you can run the following to see the pods running on your container cluster:
 
-Now do some changes on `src/app.py` to differentiate both apps. When you are
-done, build and tag your "new" app:
+	kubectl apply -f replicationcontroller.yaml -f tcp_loadbalancer_service.yaml
 
-    docker build -t agonzalezro/k8s-py-example .
-    docker tag agonzalezro/k8s-py-example:latest agonzalezro/k8s/py-example:0.2
+The above command will create a replication controller that will ensure that the pods will be started on the node(s). The service will create a network load balancer that will attached the endpoints and deliver traffic to the containers on the nodes.
 
-When you are done push them to the hub, remember to create the project before
-hand:
+One you have made some changes to `src/app.py` build and push your updated app:
 
-    docker push agonzalezro/k8s-py-example
+	docker build -t gcr.io/[PROJECTID/kubestats:latest .
+	gcloud docker -- push gcr.io/[PROJECTID]/kubestats:latest
 
-Ok, now we are ready to deploy it into kubernetes. There are three important
-files in this repo:
+You can also run the application locally by running the following:
 
-- **rc-0.1.yml**: the replication controller for the first version.
-- **rc-0.2.yml**: the replication controller for the second version.
-- **service.yml**: the service for both.
-
-Let's create a RC and a service for the first version:
-
-    kubectl -f rc-0.1.yml -f service.yml --validate=false
-    # The validate tag is just needed because of a bug in current k8s
-
-Now if you do:
-
-    kubectl get services
-
-You should be seeing something like this:
-
-    flaskapp-service 10.91.246.233 104.197.30.229 80/TCP name=web 1m
-
-The second IP is your external IP for the version 1 of your app. You can visit
-it and you will see your awesome app running!
+	docker build -t kubestats:latest . && docker run -p 5000:5000
 
 We have the version 0.1 running, I always want to run last versions of
 everything so I will update it:
 
-    kubectl rolling-update flaskapp-rc -f rc-0.2.yml
+        kubectl rolling-update kubestats-app -f rc-0.2.yml
 
-BOOM! Your app was gracefully deployed to the new version.
-
-Nice k8s commands
------------------
-
-    kubectl config view
-    kubectl cluster-info # Check that UI, it's pretty cool!
-
-Some footnotes
---------------
-
-I did this small tutorial in part based on [@ipedrazas
-work](https://github.com/ipedrazas/k8s-lskp-demo). You should read it as well!
