@@ -9,7 +9,7 @@ app = Flask(__name__)
 def hello_world():
     getcwd = os.getcwd()
     top = subprocess.check_output("ps", shell=True)
-    output = 'Hostname: %s \n Top: %s' % (socket.gethostname(), top)
+    output = 'Newest \nHostname: %s \n Top: %s' % (socket.gethostname(), top)
     return output
 
 if __name__ == '__main__':
