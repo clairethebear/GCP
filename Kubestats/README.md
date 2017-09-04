@@ -62,4 +62,4 @@ Once this is done we can see our pods being deleted and replcae by the updated p
 
 
 
-
+[1] Good write up on difference between using RC vs Deploy manifests for launches: https://ryaneschinger.com/blog/rolling-updates-kubernetes-replication-controllers-vs-deployments/
