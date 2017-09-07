@@ -5,6 +5,7 @@ RUN apk-install python
 COPY src/requirements.txt .
 RUN apk --update add --virtual build-dependencies py-pip \
   && pip install -r requirements.txt \
+  && apk add curl \
   && apk del build-dependencies
 
 COPY src /code
