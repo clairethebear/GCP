@@ -4,5 +4,5 @@ metadata:
   name: basic-ingress
 spec:
   backend:
-    serviceName: kubestats
+    serviceName: kubestats-service
     servicePort: 80

@@ -8,11 +8,16 @@ app = Flask(__name__)
 @app.route('/')
 def kubestats():
     getcwd = os.getcwd()
-    node_ip = subprocess.check_output("curl http://169.254.169.254/0.1/meta-data/network", shell=True)
-    node_ip = format_ip(node_ip)
-    top = subprocess.check_output("ps", shell=True)
-    output = 'Newest \nHostname: %s \n Top: %s \n\n Node IP: %s\n\n' % (socket.gethostname(), top, node_ip)
-    return output
+    node_id = None
+    try:
+      node_ip = subprocess.check_output("curl http://169.254.169.254/0.1/meta-data/network", shell=True)
+      node_ip = format_ip(node_ip)
+    except IOError:
+      print "Error meta-data server not running on this machine"
+#    top = subprocess.check_output("ps", shell=True)
+#    output = 'Newest \nHostname: %s \n Top: %s \n\n Node IP: %s\n\n' % (socket.gethostname(), top, node_ip)
+#    return output
+     return 'testing new'
 
 def format_ip(node_ip):
     split_by_name = node_ip.split("externalIp\":\"", 1)[1]
@@ -20,4 +25,4 @@ def format_ip(node_ip):
     return split_by_name
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')

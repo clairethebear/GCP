@@ -58,7 +58,15 @@ We need this so that we can apply the new image to the deployment - in our case 
 Once this is done we can see our pods being deleted and replcae by the updated pods.
 
 
+Create an Ingress
+=================
 
+An ingress load balancer offers more support for SSL termination, routing rules
+etc..
+
+This works by connecting to the backend service that we created earlier. The
+ingress points to the service which has the routing information to find our
+pods.
 
 
 
