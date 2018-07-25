@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simplepythonapp
+  labels:
+    app: simplepythonapp-label
+spec:
+  containers:
+  - name: simplepythonapp
+    image: gcr.io/claire-play/simplepythonapp:latest
+    ports:
+    - containerPort: 5000

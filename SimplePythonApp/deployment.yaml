@@ -1,0 +1,16 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: kubestats
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: kubestats
+    spec:
+      containers:
+      - name: kubestats
+        image: gcr.io/claire-play/simplepythonapp:latest
+        ports:
+        - containerPort: 5000
