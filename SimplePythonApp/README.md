@@ -58,10 +58,6 @@ would like to create a pod.
 - The metadata field specifies the data that helps uniquely identify the object, including a name string, UID, and optional namespace.
 - The spec field has a different format for every for every kubernetes object. [2]
 
-[1] https://git.k8s.io/community/contributors/design-proposals/api-machinery/api-group.md
-[2] https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/
-
-
 Now you should be able to see the pod running inside the cluster:
 
     kubectl get pods
@@ -91,6 +87,9 @@ cluster is created so that every pod in your cluster can make API requests to
 the Kubernetes Master without having to hard-code the API URL.
 
 
+[1] https://git.k8s.io/community/contributors/design-proposals/api-machinery/api-group.md
+
+[2] https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/
 
 
 
