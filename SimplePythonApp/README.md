@@ -4,36 +4,43 @@ Building a simple Python application on K8s
 Creating a cluster:
 
 Set up the constants for the project:
+
     PROJECT_ID="name_of_your_project"
 	COMPUTE_ZONE="us-central1-a"
 	CLUSTER_NAME="simple-python-app"
 
 Create the cluster:
+
 	gcloud config set project $PROJECT_ID
 	gcloud config set compute/zone $COMPUTE_ZONE
 	gcloud container clusters create $CLUSTER_NAME --zone $COMPUTE_ZONE
 
 Make sure you are working on the correct cluster:
+
 	gcloud container clusters list
 	gcloud container clusters get-credentials $CLUSTER_NAME
 
 Run the sammple application locally:
 
 Run the application locally:
+
     docker build -t simplepythonapp:latest . && docker run -p 5000:5000 simplepythonapp:latest 
 
 Or you can also run it locally using Google Container Registry:
+
     docker build -t gcr.io/$PROJECT_ID/simplepythonapp:latest . && docker run -p 5000:5000 gcr.io/$PROJECT_ID/simplepythonapp:latest
 
 
 Deploying a pod:
 
 First you need to push the image to container registry:
+
     gcloud docker -- push gcr.io/$PROJECT_ID/simplepythonapp:latest
     kubectl deploy -f pod.yaml
 
 This will create one pod inside the cluster created earlier. Lets inspect the
 pod.yaml.
+
         apiVersion: v1
         kind: Pod
         metadata:
@@ -56,6 +63,7 @@ would like to create a pod.
 
 
 Now you should be able to see the pod running inside the cluster:
+
     kubectl get pods
 
 Exposing your pod:
